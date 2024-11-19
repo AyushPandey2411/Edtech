@@ -46,6 +46,16 @@ const userSchema=new mongoose.Schema({
         type:String, //as will be giving url
         required:true,
     },
+
+    //----adding for reset password
+    token:{
+        type:String,
+    },
+    resetPasswordExpires:{
+        type:Date,
+    },
+
+
     //many courses can be there so adding courseProgress in an Array
     
     courseProgress:[

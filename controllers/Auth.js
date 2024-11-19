@@ -1,6 +1,6 @@
-
 const User=require("../models/User");
 const OTP=require("../models/OTP");
+const Profile = require('../models/Profile')
 const otpGenerator=require("otp-generator");
 const bcrypt=require("bcryptjs");
 
@@ -8,7 +8,7 @@ const jwt=require("jsonwebtoken");
 require("dotenv").config();
 
 
-//sendOTP
+//---------- sendOTP
 exports.sendOTP=async(req,res)=>{
 
     try {
@@ -78,6 +78,7 @@ exports.sendOTP=async(req,res)=>{
 
 
 //-----sign up----
+
 exports.signUp=async(req,res)=>{
     try {
         //data fetch from request's body
@@ -90,7 +91,7 @@ exports.signUp=async(req,res)=>{
         accountType,
         contactNumber,
         otp
-    }=req.body;  //we have missed confirmPassword,contactnumber--till now
+    }=req.body;  //we have missed confirmPassword,contactnumber--till now(in models)
     
     //validation
 
@@ -113,7 +114,7 @@ exports.signUp=async(req,res)=>{
         });
     }
 
-    //check if user already exist or not--throgh DB call
+    //check if user already exist or not--through DB call
     const existingUser=await User.findOne({email});
 
     if(existingUser)
@@ -138,7 +139,7 @@ exports.signUp=async(req,res)=>{
             message:"OTP not found",
         })
     }
-    else if(otp !==recentOtp.otp)
+    else if(otp !==recentOtp[0].otp)
     {
         //invalid Otp
         return res.status(400).json({
@@ -146,7 +147,7 @@ exports.signUp=async(req,res)=>{
             message:"Invalid OTP",
         });
     }
-
+    
 
     //Hash Password
 
@@ -169,7 +170,7 @@ exports.signUp=async(req,res)=>{
         password:hashedPassword,
         accountType,
         additionalDetails:profileDetails._id,
-        image:`https://api.dicebear.com/5.x/initials/svg?seed=${firstname} ${lastName}`,
+        image:`https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
     })
     
     //return res
@@ -272,7 +273,7 @@ exports.login=async(req,res)=>{
 
 
 
-//changePassword
+//changePassword------ to be written by ourself
 exports.changePassword=async(req,res)=>{
     //get data from req body
 

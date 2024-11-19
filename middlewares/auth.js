@@ -37,7 +37,7 @@ exports.auth=async(req,res,next)=>{
                 message:"Token is invalid",
             });
         }
-        next();
+        next();//next middleware in stack will be called
 
         } 
         catch (error) {
@@ -56,7 +56,7 @@ exports.isStudent=async(req,res,next)=>{
             {
                 return res.status(401).json({
                     success:false,
-                    message:"this is a protected route for  only",
+                    message:"this is a protected route for Student only",
                 });
             }
             next();
